@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-// @ts-ignore
 import sad from '../assets/sad-rounded-square-emoticon.svg';
 
 
@@ -49,9 +48,9 @@ const EmptyWrapper = styled.div`
 const JogEmpty: React.FC = () => {
   return (
     <EmptyWrapper>
-      <img src={sad} className="icon"/>
+      <img src={sad} className="icon" alt={"Sad"}/>
       <div className="message">Nothing is there</div>
-      <Link to="/create-jog" className="button">
+      <Link to="/form" className="button">
         Create your jog first
       </Link>
     </EmptyWrapper>

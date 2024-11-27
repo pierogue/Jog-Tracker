@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-// @ts-ignore
 import logo from '../assets/logo_inline.svg'
-// @ts-ignore
 import filter from '../assets/filter.svg'
 
 const HeaderWrapper = styled.div`
@@ -12,6 +10,7 @@ const HeaderWrapper = styled.div`
   align-items: center;
   padding: 1.2rem 2rem;
   background-color: var(--apple-green);
+  white-space: nowrap;
 `;
 
 const Logo = styled.img`
@@ -31,11 +30,14 @@ const NavLinks = styled.div`
     margin: 0 1rem;
     font-size: 14px;
     color: white;
-    text-decoration: none;
+    text-decoration: transparent;
+    transition: 0.2s;
     
     &:hover {
       text-decoration: underline;
       text-underline-offset: 5px;
+      text-decoration-thickness: 2px;
+      
     }
   }
 `;
@@ -47,7 +49,7 @@ const Header: React.FC = () => {
       <NavLinks>
                 <Link to="/jogs">JOGS</Link>
                 <Link to="/info">INFO</Link>
-                <Link to="/contact">CONTACT US</Link>
+                <a href={"https://yellow.systems/"}>CONTACT US</a>
                 <img src={filter} alt={"filter"}/>
             </NavLinks>
       </HeaderWrapper>

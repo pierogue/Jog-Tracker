@@ -33,11 +33,17 @@ const FormWrapper = styled.div`
   button {
     padding: 0.5rem;
     background-color: var(--baby-green);
-    color: white;
+    color: var(--white-two);
     border: solid 1px var(--white-two);
     border-radius: 25.2px;
     cursor: pointer;
     margin: 1rem;
+    transition: 0.3s;
+    
+    &:hover {
+      background-color: var(--white-two);
+      color: var(--baby-green);
+    }
   }
 `;
 

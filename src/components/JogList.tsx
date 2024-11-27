@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-// @ts-ignore
-import jogIcon from '../assets/jog.svg';
-// @ts-ignore
-import addIcon from '../assets/add.svg';
 import {Link} from "react-router-dom";
+import jogIcon from '../assets/jog.svg';
+import addIcon from '../assets/add.svg';
 
 const FilterWrapper = styled.div`
   height: 3rem;
@@ -48,7 +46,7 @@ const JogItem = styled.div`
     font-size: 0.9rem;
     
     p {
-      margin: 5px 0px;
+      margin: 5px 0;
       
       &.date {
         color: rgb(0, 0, 0, 0.5);

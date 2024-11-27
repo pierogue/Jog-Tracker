@@ -1,23 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
+import {useNavigate} from "react-router-dom";
+import bear from '../assets/bear-face.svg'
 
 const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 80vh;
   background-color: #ffffff;
 
   .content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 30px;
     background-color: #ffb3ff;
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
+    width: 500px;
+    height: 350px;
+    
     .bear-icon {
       font-size: 4rem;
       color: #ffffff;
@@ -45,10 +51,20 @@ const LoginWrapper = styled.div`
 `;
 
 const LoginPage: React.FC = () => {
+  const auth = false;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(auth) {
+      navigate('/jogs')
+    }
+  }, []);
+
   return (
     <LoginWrapper>
       <div className="content">
-        <div className="bear-icon">🐻</div>
+        <img className="bear-icon" src={bear} alt={"Bearlogo"}/>
         <button className="button">Let me in</button>
       </div>
     </LoginWrapper>
