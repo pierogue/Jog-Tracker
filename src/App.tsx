@@ -7,22 +7,31 @@ import JogForm from "./components/JogForm";
 import JogEmpty from "./components/JogEmpty";
 import LoginPage from "./components/LoginPage";
 import InfoPage from "./components/InfoPage";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
+import MobileNav from "./components/MobileNav";
 
 const App: React.FC = () => {
 
+  const jogs = true;
+  const isMenuActive = useSelector((state: RootState) => state.menu.isMenuActive);
 
-  const jogs = false;
   return (
       <>
           <GlobalStyles/>
           <Router>
             <Header/>
-            <Routes>
-              <Route path={'/jogs'} element={jogs ? <JogList/> : <JogEmpty/>}/>
-              <Route path={'/'} index element={<LoginPage/>}/>
-              <Route path={'/form'} element={<JogForm/>}/>
-              <Route path={'/info'} element={<InfoPage/>}/>
-            </Routes>
+            {
+              isMenuActive ? <MobileNav/> :
+              <Routes>
+                <Route path={'/jogs'} element={
+                  jogs ? <JogList/> : <JogEmpty/>
+                }/>
+                <Route path={'/'} index element={<LoginPage/>}/>
+                <Route path={'/form'} element={<JogForm/>}/>
+                <Route path={'/info'} element={<InfoPage/>}/>
+              </Routes>
+            }
           </Router>
       </>
   );

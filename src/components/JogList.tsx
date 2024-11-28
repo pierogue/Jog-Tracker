@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import jogIcon from '../assets/jog.svg';
 import addIcon from '../assets/add.svg';
+import {useSelector} from "react-redux";
+import {RootState} from "../store/store";
 
 const FilterWrapper = styled.div`
   height: 3rem;
@@ -22,6 +24,7 @@ const FilterOption = styled.label`
     height: 1.6rem;
     border-radius: 0.5rem;
     border: solid 1px gray;
+    padding: 0 10px;
   }
 `
 
@@ -30,12 +33,28 @@ const JogListWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+
+  @media(max-width: 460px){
+    padding: 0 2rem;
+  }
+  
+  .separator {
+    width: 100vw;
+    height: 0.1rem;
+    background-color: var(--white);
+    
+    @media(min-width: 460px){
+      display: none;
+    }
+  }
 `;
 
 const JogItem = styled.div`
   display: flex;
   align-items: center;
   margin: 1.4rem 0;
+  
+  
   .icon {
     width: 80px;
     height: 80px;
@@ -44,6 +63,7 @@ const JogItem = styled.div`
 
   .details {
     font-size: 0.9rem;
+    white-space: nowrap;
     
     p {
       margin: 5px 0;
@@ -70,29 +90,39 @@ const jogs = [
 ];
 
 const JogList: React.FC = () => {
+  const isFilterActive = useSelector((state: RootState) => state.filter.isFilterActive);
+
   return (
     <>
-      <FilterWrapper>
-        <FilterOption>
-          Date from
-          <input type={"date"}/>
-        </FilterOption>
-        <FilterOption>
-          Date to
-          <input type={"date"}/>
-        </FilterOption>
-      </FilterWrapper>
+      {
+        isFilterActive ?
+          <FilterWrapper>
+            <FilterOption>
+              Date from
+              <input type={"date"}/>
+            </FilterOption>
+            <FilterOption>
+              Date to
+              <input type={"date"}/>
+            </FilterOption>
+          </FilterWrapper>
+        :
+          <></>
+      }
       <JogListWrapper>
         {jogs.map((jog, index) => (
-          <JogItem key={index}>
-            <img className="icon" src={jogIcon} alt={"Jog"}/>
-            <div className="details">
-              <p className={"date"}>{jog.date}</p>
-              <p><b>Speed:</b> {jog.speed} km/h</p>
-              <p><b>Distance:</b> {jog.distance} km</p>
-              <p><b>Time:</b> {jog.time} min</p>
-            </div>
-          </JogItem>
+          <>
+            <JogItem key={index}>
+              <img className="icon" src={jogIcon} alt={"Jog"}/>
+              <div className="details">
+                <p className={"date"}>{jog.date}</p>
+                <p><b>Speed:</b> {jog.speed} km/h</p>
+                <p><b>Distance:</b> {jog.distance} km</p>
+                <p><b>Time:</b> {jog.time} min</p>
+              </div>
+            </JogItem>
+            <div className={"separator"}></div>
+          </>
         ))}
       </JogListWrapper>
       <Link to={'/form'}>

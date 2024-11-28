@@ -5,16 +5,31 @@ const FormWrapper = styled.div`
   padding: 5rem 2rem 3rem 2rem;
   display: flex;
   flex-direction: column;
-  width: 500px;
+  max-width: 500px;
+  min-width: 250px;
   margin: 20vh auto 0 auto;
   background-color: var(--apple-green);
   border-radius: 44px;;
+
+  @media(max-width: 500px){
+    flex-flow: column;
+    align-items: center;
+  }
+  
+  @media(max-width: 600px){
+    margin: 20vh 40px;
+  }
 
   label {
     margin: 0.5rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
+    @media(max-width: 500px){
+      flex-flow: column;
+      align-items: flex-start;
+    }
     
     p {
       font-size: 14px;
@@ -37,8 +52,9 @@ const FormWrapper = styled.div`
     border: solid 1px var(--white-two);
     border-radius: 25.2px;
     cursor: pointer;
-    margin: 1rem;
+    margin: 1rem auto;
     transition: 0.3s;
+    width: 90%;
     
     &:hover {
       background-color: var(--white-two);

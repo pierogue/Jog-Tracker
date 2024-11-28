@@ -6,10 +6,16 @@ const InfoPage: FC = () => {
     display: flex;
     justify-content: center;
     flex-flow: column nowrap;
-    padding: 40px 30vw;
-    
+    margin: 2rem 20vw;
+    max-width: 800px;
+
     h1 {
-      color: var(--apple-green)
+      color: var(--apple-green);
+    }
+    
+    @media(max-width: 700px){
+      margin: 2rem;
+
     }
   `
 
@@ -18,6 +24,7 @@ const InfoPage: FC = () => {
       <h1>INFO</h1>
       <p>
         Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
+        Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
         Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
         Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
       </p>
