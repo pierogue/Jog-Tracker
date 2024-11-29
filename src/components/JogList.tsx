@@ -112,7 +112,7 @@ const JogList: React.FC = () => {
       setJogs(await fetchJogs());
       setFiltered(jogs);
     })()
-  }, []);
+  }, [jogs, fetchJogs]);
 
   useEffect(() => {
     const from = fromDate ? new Date(fromDate) : null;
