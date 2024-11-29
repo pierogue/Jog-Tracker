@@ -90,7 +90,7 @@ const Header: React.FC = () => {
   return (
     <>
       <HeaderWrapper isMenuActive={isMenuActive}>
-        <Link to={"/jogs"}>
+        <Link to={"/"}>
           <Logo src={!isMenuActive ? logo : logoGreen}></Logo>
         </Link>
         <NavLinks isFilterActive={isFilterActive}>

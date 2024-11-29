@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import jogIcon from '../assets/jog.svg';
 import addIcon from '../assets/add.svg';
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
+import Auth from "../auth/auth";
+import axios from "axios";
+import {jogDto} from "../dto/jogDto";
 
 const FilterWrapper = styled.div`
   height: 3rem;
@@ -37,12 +40,12 @@ const JogListWrapper = styled.div`
   @media(max-width: 460px){
     padding: 0 2rem;
   }
-  
+
   .separator {
     width: 100vw;
     height: 0.1rem;
     background-color: var(--white);
-    
+
     @media(min-width: 460px){
       display: none;
     }
@@ -54,7 +57,6 @@ const JogItem = styled.div`
   align-items: center;
   margin: 1.4rem 0;
   
-  
   .icon {
     width: 80px;
     height: 80px;
@@ -64,10 +66,10 @@ const JogItem = styled.div`
   .details {
     font-size: 0.9rem;
     white-space: nowrap;
-    
+
     p {
       margin: 5px 0;
-      
+
       &.date {
         color: rgb(0, 0, 0, 0.5);
       }
@@ -81,16 +83,50 @@ const AddButton = styled.img`
   right: 40px;
 `
 
-const jogs = [
-  { date: '20.12.2017', speed: 15, distance: 10, time: 60 },
-  { date: '20.12.2017', speed: 15, distance: 10, time: 60 },
-  { date: '20.12.2017', speed: 15, distance: 10, time: 60 },
-  { date: '20.12.2017', speed: 15, distance: 10, time: 60 },
-  { date: '20.12.2017', speed: 15, distance: 10, time: 60 },
-];
-
 const JogList: React.FC = () => {
   const isFilterActive = useSelector((state: RootState) => state.filter.isFilterActive);
+  const [fromDate, setFromDate] = useState<string>('');
+  const [toDate, setToDate] = useState<string>('');
+  const auth = new Auth();
+  const [jogs, setJogs] = useState<jogDto[]>([]);
+  const [filtered, setFiltered] = useState<jogDto[]>([]);
+
+
+  const fetchJogs = async () =>{
+    const token = auth.getToken();
+    if(token){
+      const API_URL = 'https://jogs-tracker-production.up.railway.app/jogs';
+
+      const response = await axios.get(API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data.jogs;
+    }
+  }
+  useEffect(() => {
+    (async () => {
+      setJogs(await fetchJogs());
+      setFiltered(jogs);
+    })()
+  }, []);
+
+  useEffect(() => {
+    const from = fromDate ? new Date(fromDate) : null;
+    const to = toDate ? new Date(toDate) : null;
+
+    const filteredJogs = jogs.filter((jog) => {
+      const jogDate = new Date(jog.date);
+      return (
+        (!from || jogDate >= from) &&
+        (!to || jogDate <= to)
+      );
+    });
+
+    setFiltered(filteredJogs);
+  }, [jogs, fromDate, toDate]);
 
   return (
     <>
@@ -99,33 +135,36 @@ const JogList: React.FC = () => {
           <FilterWrapper>
             <FilterOption>
               Date from
-              <input type={"date"}/>
+              <input value={fromDate} type={"date"} className={"fromDate"}  onChange={(e) => {
+                setFromDate(e.target.value);
+              }}/>
             </FilterOption>
             <FilterOption>
               Date to
-              <input type={"date"}/>
+              <input value={toDate} type={"date"} className={"toDate"} onChange={(e) => {
+                setToDate(e.target.value);
+              }}/>
             </FilterOption>
           </FilterWrapper>
         :
           <></>
       }
       <JogListWrapper>
-        {jogs.map((jog, index) => (
+        {(isFilterActive ? filtered : jogs).map((jog, index) => (
           <>
             <JogItem key={index}>
               <img className="icon" src={jogIcon} alt={"Jog"}/>
               <div className="details">
-                <p className={"date"}>{jog.date}</p>
-                <p><b>Speed:</b> {jog.speed} km/h</p>
-                <p><b>Distance:</b> {jog.distance} km</p>
-                <p><b>Time:</b> {jog.time} min</p>
+                <p className={"date"}>{new Date(jog.date).toLocaleDateString()}</p>
+                <p><b>Distance:</b> {Number(jog.distance / 1000).toFixed(2)} km</p>
+                <p><b>Time:</b> {Number(jog.time / 3600).toFixed(2)} min</p>
               </div>
             </JogItem>
             <div className={"separator"}></div>
           </>
         ))}
       </JogListWrapper>
-      <Link to={'/form'}>
+      <Link to={'/form'} role={"button"}>
         <AddButton src={addIcon}/>
       </Link>
     </>
