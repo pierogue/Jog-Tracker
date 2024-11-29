@@ -57,6 +57,7 @@ const JogItem = styled.div`
   align-items: center;
   margin: 1.4rem 0;
   
+  
   .icon {
     width: 80px;
     height: 80px;
