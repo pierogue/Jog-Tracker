@@ -93,26 +93,24 @@ const JogList: React.FC = () => {
   const [filtered, setFiltered] = useState<jogDto[]>([]);
 
 
-  const fetchJogs = async () =>{
-    const token = auth.getToken();
-    if(token){
-      const API_URL = 'https://jogs-tracker-production.up.railway.app/jogs';
-
-      const response = await axios.get(API_URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return response.data.jogs;
-    }
-  }
   useEffect(() => {
-    (async () => {
-      setJogs(await fetchJogs());
-      setFiltered(jogs);
-    })()
-  }, [jogs, fetchJogs]);
+    const fetchJogs = async () =>{
+      const token = auth.getToken();
+      if(token){
+        const API_URL = 'https://jogs-tracker-production.up.railway.app/jogs';
+
+        const response = await axios.get(API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setJogs(response.data.jogs);
+        setFiltered(jogs)
+        return response.data.jogs;
+      }
+    }
+    fetchJogs()
+  }, [jogs]);
 
   useEffect(() => {
     const from = fromDate ? new Date(fromDate) : null;
