@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import {Link, useNavigate} from "react-router-dom";
+import cancel from '../assets/cancel.svg';
+import axios from "axios";
+import Auth from "../auth/auth";
 
 const FormWrapper = styled.div`
   padding: 5rem 2rem 3rem 2rem;
@@ -10,6 +14,7 @@ const FormWrapper = styled.div`
   margin: 20vh auto 0 auto;
   background-color: var(--apple-green);
   border-radius: 44px;;
+  position: relative;
 
   @media(max-width: 500px){
     flex-flow: column;
@@ -20,6 +25,12 @@ const FormWrapper = styled.div`
     margin: 20vh 40px;
   }
 
+  .cancel {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
+  
   label {
     margin: 0.5rem 1rem;
     display: flex;
@@ -67,13 +78,34 @@ const JogForm: React.FC = () => {
   const [distance, setDistance] = useState('');
   const [time, setTime] = useState('');
   const [date, setDate] = useState('');
+  const auth = new Auth();
 
-  const handleSubmit = () => {
-    console.log({ distance, time, date });
+  const navigate = useNavigate();
+  const handleSubmit = async () => {
+    const API_KEY = 'https://jogs-tracker-production.up.railway.app/jogs'
+
+    const newDate = new Date(date);
+    const newTime = +time * 3600;
+    const newDistance = +distance * 1000;
+
+    await axios.post(API_KEY,
+      {distance: newDistance, time: newTime, date: newDate},
+      {
+        headers: {
+          Authorization : `Bearer ${auth.getToken()}`,
+          ContentType: "Application/json"
+        }
+      }
+    )
+
+    navigate('/jogs');
   };
 
   return (
     <FormWrapper>
+      <Link to={'/jogs'} className={"cancel"} draggable={false}>
+        <img src={cancel} alt={"cancel"} draggable={false}/>
+      </Link>
       <label>
         <p>Distance</p>
         <input

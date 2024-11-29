@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {useNavigate} from "react-router-dom";
 import bear from '../assets/bear-face.svg';
 import bearPurple from '../assets/bear-face-purple.svg';
+import Auth from "../auth/auth";
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ const LoginWrapper = styled.div`
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 500px;
     height: 350px;
+    transition: 0.2s;
     
     @media(max-width: 460px){
       background-color: var(--white-two);
@@ -78,22 +80,20 @@ const LoginWrapper = styled.div`
 `;
 
 const LoginPage: React.FC = () => {
-  const auth = false;
 
+  const auth = new Auth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if(auth) {
-      navigate('/jogs')
-    }
-  }, []);
+  const login = async ()=>{
+    await auth.setToken();
+    navigate("/jogs");
+  }
 
   return (
     <LoginWrapper>
       <div className="content">
         <img className="bear-icon" src={bear} alt={"Bearlogo"}/>
         <img className="bear-icon-2" src={bearPurple} alt={"Bearlogo"}/>
-        <button className="button">Let me in</button>
+        <button className="button" onClick={login}>Let me in</button>
       </div>
     </LoginWrapper>
   );
